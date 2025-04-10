@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Quiz Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="https://ai-public.creatie.ai/gen_page/logo_placeholder.png" alt="Logo">
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="text-sm font-medium text-gray-500">
+                        Score: <span class="text-custom" id="score">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white shadow rounded-lg p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-900">Question <span id="currentQuestion">1</span> of 5</h2>
+                <div class="w-48 h-2 bg-gray-200 rounded-full">
+                    <div class="w-1/5 h-2 bg-custom rounded-full" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="question-container">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">What is the capital city of France?</h3>
+                    
+                    <div class="space-y-4">
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="radio" name="answer" value="1" class="h-4 w-4 text-custom border-gray-300 focus:ring-custom">
+                            <span class="ml-3 text-gray-700">London</span>
+                        </label>
+                        
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="radio" name="answer" value="2" class="h-4 w-4 text-custom border-gray-300 focus:ring-custom">
+                            <span class="ml-3 text-gray-700">Paris</span>
+                        </label>
+                        
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="radio" name="answer" value="3" class="h-4 w-4 text-custom border-gray-300 focus:ring-custom">
+                            <span class="ml-3 text-gray-700">Berlin</span>
+                        </label>
+                        
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                            <input type="radio" name="answer" value="4" class="h-4 w-4 text-custom border-gray-300 focus:ring-custom">
+                            <span class="ml-3 text-gray-700">Madrid</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <button class="!rounded-button px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 font-medium" id="clearBtn">
+                        <i class="fas fa-undo mr-2"></i>Clear Selection
+                    </button>
+                    <button class="!rounded-button px-6 py-2 bg-custom text-white hover:bg-custom/90 font-medium" id="submitBtn">
+                        <i class="fas fa-check mr-2"></i>Submit Answer
+                    </button>
+                </div>
+
+                <div id="feedback" class="hidden mt-6 p-4 rounded-lg">
+                    <div class="correct-feedback hidden bg-green-50 border border-green-200 p-4 rounded-lg">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-green-800">Correct Answer!</h3>
+                                <div class="mt-2 text-sm text-green-700">
+                                    <p>Paris is indeed the capital city of France. It's known as the "City of Light" and is one of the most visited cities in the world.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="incorrect-feedback hidden bg-red-50 border border-red-200 p-4 rounded-lg">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-times-circle text-red-400 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800">Incorrect Answer</h3>
+                                <div class="mt-2 text-sm text-red-700">
+                                    <p>The correct answer is Paris. As the capital of France, Paris is home to numerous iconic landmarks including the Eiffel Tower and the Louvre Museum.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8 pt-6 border-t">
+                <button class="!rounded-button px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 font-medium disabled:opacity-50" id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                <button class="!rounded-button px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 font-medium" id="nextBtn">
+                    Next<i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            document.querySelectorAll('input[name="answer"]').forEach(input => input.checked = false);
+            document.getElementById('feedback').classList.add('hidden');
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (!selectedAnswer) return;
+
+            document.getElementById('feedback').classList.remove('hidden');
+            if (selectedAnswer.value === '2') {
+                document.querySelector('.correct-feedback').classList.remove('hidden');
+                document.querySelector('.incorrect-feedback').classList.add('hidden');
+            } else {
+                document.querySelector('.correct-feedback').classList.add('hidden');
+                document.querySelector('.incorrect-feedback').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

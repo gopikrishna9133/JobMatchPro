@@ -1,0 +1,9 @@
+Flask
+Flask-WTF
+Flask-SQLAlchemy
+Flask-Login
+Flask-Bcrypt
+google.generativeai
+email-validator
+flask-migrate
+fpdf

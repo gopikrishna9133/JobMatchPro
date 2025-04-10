@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Resume</title>
+    <script>
+        function updatePreview() {
+            document.getElementById('previewName').innerText = document.getElementById('name').value;
+            document.getElementById('previewEmail').innerText = document.getElementById('email').value;
+            document.getElementById('previewPhone').innerText = document.getElementById('phone').value;
+            document.getElementById('previewSummary').innerText = document.getElementById('summary').value;
+        }
+    </script>
+</head>
+<body>
+    <h2>Create Your Resume</h2>
+    
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" id="name" name="name" oninput="updatePreview()" required>
+
+        <label>Email:</label>
+        <input type="email" id="email" name="email" oninput="updatePreview()" required>
+
+        <label>Phone:</label>
+        <input type="text" id="phone" name="phone" oninput="updatePreview()" required>
+
+        <label>Summary:</label>
+        <textarea id="summary" name="summary" oninput="updatePreview()"></textarea>
+
+        <label>Select Style:</label>
+        <select name="style">
+            <option value="style1">Professional (Blue Theme)</option>
+            <option value="style2">Modern (Green Theme)</option>
+        </select>
+
+        <button type="submit">Create & Download</button>
+    </form>
+
+    <h3>Preview</h3>
+    <div style="border: 1px solid gray; padding: 10px; margin-top: 10px;">
+        <h3 id="previewName">[Your Name]</h3>
+        <p id="previewEmail">[Your Email]</p>
+        <p id="previewPhone">[Your Phone]</p>
+        <p id="previewSummary">[Your Summary]</p>
+    </div>
+</body>
+</html>

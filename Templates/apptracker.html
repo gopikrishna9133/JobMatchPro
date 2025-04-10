@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch - Seeker Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            height: 80%;
+            overflow: auto;
+        }
+        .popup iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .filter-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 8px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen flex flex-col">
+        <nav class="bg-white border-b border-gray-200">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex">
+                        <div class="flex-shrink-0 flex items-center">
+                            <img class="h-8 w-auto" src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+                        </div>
+                        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                            <a href="{{ url_for('app_tracker') }}" class="border-custom text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Dashboard</a>
+                            <a href="{{ url_for('chatbot') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">AI Chatbot</a>
+                            <a href="{{ url_for('resources') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Resources</a>
+                            <a href="{{ url_for('testimonial') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Testimonials</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <button onclick="window.location.href='{{ url_for('resumebuilder') }}'" type="button" class="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 focus:outline-none">
+                            <i class="fas fa-file-alt text-lg"></i> Resume
+                        </button>
+                        <a href="{{ url_for('logout') }}" class="ml-3 p-2 rounded-full bg-red-500 text-white hover:bg-red-600 focus:outline-none">
+                            <i class="fas fa-sign-out-alt text-lg"></i> Logout
+                        </a>
+                        <div class="ml-3 relative">
+                            <a href="{{ url_for('view_profile') }}" 
+   class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <span class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700">{{ current_user.name[0] if current_user.name else 'U' }}</span>
+</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="flex-1 overflow-hidden">
+            <div class="py-6">
+                <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center mb-8">
+                        <div>
+                            <h1 class="text-2xl font-semibold text-gray-900">Job Application Dashboard</h1>
+                            <p class="mt-1 text-sm text-gray-500">Track and manage your job applications efficiently</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <input type="text" id="search-input" placeholder="Search applications..." class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-custom focus:border-custom">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                            <button id="newAppBtn" class="!rounded-button bg-custom px-4 py-2 text-white hover:bg-indigo-700 flex items-center space-x-2">
+                                <i class="fas fa-plus"></i>
+                                <span>New Application</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-12 gap-6">
+                        <div class="col-span-12">
+                            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                                <h2 class="text-lg font-medium text-gray-900">Application Status</h2>
+                                <div id="application-status" class="mt-4">
+                                    <h3 class="text-green-600 text-md font-semibold">Accepted Applications</h3>
+                                    <ul id="accepted-applications" class="list-disc ml-6 text-sm text-gray-700 mb-4"></ul>
+                                    <h3 class="text-red-600 text-md font-semibold">Rejected Applications</h3>
+                                    <ul id="rejected-applications" class="list-disc ml-6 text-sm text-gray-700 mb-4"></ul>
+                                    <h3 class="text-yellow-600 text-md font-semibold">Under Review Applications</h3>
+                                    <ul id="under-review-applications" class="list-disc ml-6 text-sm text-gray-700"></ul>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h2 class="text-lg font-medium text-gray-900">Application Activity</h2>
+                                    <div class="flex space-x-2 relative">
+                                        <button id="filterBtn" class="!rounded-button px-3 py-1 text-sm border border-gray-300 hover:bg-gray-50">
+                                            <i class="fas fa-filter mr-2"></i>Filter
+                                        </button>
+                                        <div id="filterDropdown" class="filter-dropdown">
+                                            <label><input type="checkbox" value="under_review" checked> Under Review</label><br>
+                                            <label><input type="checkbox" value="accepted" checked> Accepted</label><br>
+                                            <label><input type="checkbox" value="rejected" checked> Rejected</label>
+                                        </div>
+                                        <button id="sortBtn" class="!rounded-button px-3 py-1 text-sm border border-gray-300 hover:bg-gray-50">
+                                            <i class="fas fa-sort mr-2"></i>Sort
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="application-activity" class="grid grid-cols-3 gap-4">
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h3 class="font-medium text-gray-900 mb-3">Under Review</h3>
+                                        <div id="under-review-list" class="space-y-3"></div>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h3 class="font-medium text-gray-900 mb-3">Accepted</h3>
+                                        <div id="accepted-list" class="space-y-3"></div>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <h3 class="font-medium text-gray-900 mb-3">Rejected</h3>
+                                        <div id="rejected-list" class="space-y-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resumePopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn">×</span>
+                <iframe id="resumeFrame" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // New Application Button Redirect to Applications Page
+        document.getElementById('newAppBtn').addEventListener('click', () => {
+            window.location.href = '{{ url_for("job_listings") }}';
+        });
+
+        // Popup Functionality for View Resume
+        function setupResumePopup() {
+            const buttons = document.querySelectorAll('.view-resume-btn');
+            const popup = document.getElementById('resumePopup');
+            const resumeFrame = document.getElementById('resumeFrame');
+            const closeBtn = document.querySelector('.close-btn');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const email = button.getAttribute('data-email');
+                    resumeFrame.src = `/view_resume/${email}`;
+                    popup.style.display = 'block';
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                popup.style.display = 'none';
+                resumeFrame.src = '';
+            });
+
+            popup.addEventListener('click', (e) => {
+                if (e.target === popup) {
+                    popup.style.display = 'none';
+                    resumeFrame.src = '';
+                }
+            });
+        }
+
+        // Update Application Status Lists
+        function updateStatusList(list, data, emptyMessage, includeOfferLetter = false) {
+            list.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(app => {
+                    let listItem = `<li class="mb-2">${app.job_title} - Applied On: ${app.applied_at}`;
+                    if (includeOfferLetter) {
+                        listItem += `
+                            <a href="/generate_offer_letter?job_title=${encodeURIComponent(app.job_title)}&applied_at=${encodeURIComponent(app.applied_at)}"
+                               class="ml-4 bg-green-500 text-white px-3 py-1 text-sm rounded hover:bg-green-600" download>
+                                Get Offer Letter
+                            </a>`;
+                    }
+                    listItem += `</li>`;
+                    list.innerHTML += listItem;
+                });
+            } else {
+                list.innerHTML = `<li>${emptyMessage}</li>`;
+            }
+        }
+
+        // Update Application Activity Lists
+        function updateActivityList(list, data) {
+            list.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(app => {
+                    list.innerHTML += `
+                        <div class="bg-white p-3 rounded border border-gray-200">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">${app.job_title}</h4>
+                                    <p class="text-sm text-gray-500">${app.company_name || 'Unknown Company'}</p>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-gray-500">${app.applied_at}</span>
+                                    <button class="text-sm text-blue-500 hover:underline apply-btn" data-id="${app.job_post_id || ''}">Apply</button>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            } else {
+                list.innerHTML = `<p class="text-sm text-gray-500">No applications</p>`;
+            }
+        }
+
+        // Fetch and Populate Application Status
+        function fetchStatus() {
+            fetch('/api/seeker_status')
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to fetch status');
+                    return response.json();
+                })
+                .then(data => {
+                    updateStatusList(document.getElementById('accepted-applications'), data.accepted, "No accepted applications.", true);
+                    updateStatusList(document.getElementById('rejected-applications'), data.rejected, "No rejected applications.");
+                    updateStatusList(document.getElementById('under-review-applications'), data.under_review, "No applications under review.");
+                    
+                    updateActivityList(document.getElementById('accepted-list'), data.accepted);
+                    updateActivityList(document.getElementById('rejected-list'), data.rejected);
+                    updateActivityList(document.getElementById('under-review-list'), data.under_review);
+                })
+                .catch(error => {
+                    console.error('Error fetching status:', error);
+                    document.querySelectorAll('#accepted-applications, #rejected-applications, #under-review-applications')
+                        .forEach(list => list.innerHTML = '<li>Error loading data</li>');
+                });
+        }
+
+        // Filter and Sort Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterBtn = document.getElementById('filterBtn');
+            const filterDropdown = document.getElementById('filterDropdown');
+            const sortBtn = document.getElementById('sortBtn');
+            let sortOrder = 'asc';
+
+            filterBtn.addEventListener('click', () => {
+                filterDropdown.style.display = filterDropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            filterDropdown.addEventListener('change', () => {
+                const filters = Array.from(filterDropdown.querySelectorAll('input:checked')).map(input => input.value);
+                fetchStatusWithFilters(filters, sortOrder);
+            });
+
+            sortBtn.addEventListener('click', () => {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                sortBtn.innerHTML = `<i class="fas fa-sort mr-2"></i>Sort (${sortOrder.toUpperCase()})`;
+                const filters = Array.from(filterDropdown.querySelectorAll('input:checked')).map(input => input.value);
+                fetchStatusWithFilters(filters, sortOrder);
+            });
+
+            function fetchStatusWithFilters(filters, order) {
+                fetch(`/api/seeker_status?filters=${filters.join(',')}&sort=${order}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateStatusList(document.getElementById('accepted-applications'), data.accepted, "No accepted applications.", true);
+                        updateStatusList(document.getElementById('rejected-applications'), data.rejected, "No rejected applications.");
+                        updateStatusList(document.getElementById('under-review-applications'), data.under_review, "No applications under review.");
+                        updateActivityList(document.getElementById('accepted-list'), data.accepted);
+                        updateActivityList(document.getElementById('rejected-list'), data.rejected);
+                        updateActivityList(document.getElementById('under-review-list'), data.under_review);
+                    })
+                    .catch(error => console.error('Error fetching filtered status:', error));
+            }
+
+            // Search Functionality
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                fetch(`/api/seeker_status?search=${encodeURIComponent(searchTerm)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateStatusList(document.getElementById('accepted-applications'), data.accepted, "No accepted applications.", true);
+                        updateStatusList(document.getElementById('rejected-applications'), data.rejected, "No rejected applications.");
+                        updateStatusList(document.getElementById('under-review-applications'), data.under_review, "No applications under review.");
+                        updateActivityList(document.getElementById('accepted-list'), data.accepted);
+                        updateActivityList(document.getElementById('rejected-list'), data.rejected);
+                        updateActivityList(document.getElementById('under-review-list'), data.under_review);
+                    })
+                    .catch(error => console.error('Error searching status:', error));
+            });
+
+            // Initial Fetch
+            fetchStatus();
+            setupResumePopup();
+        });
+    </script>
+</body>
+</html>

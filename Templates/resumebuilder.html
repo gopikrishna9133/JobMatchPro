@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Resume Builder</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <!-- html2pdf for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-gray-50 font-[Inter]">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="/static/img/logo.png" alt="Logo"/>
+                        <span class="ml-2 text-xl font-semibold text-gray-900">Resume Builder</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-blue-600 text-white px-4 py-2 text-sm font-medium rounded-md hover:bg-blue-700">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-gray-900">Create Your Resume</h1>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500">Auto-saving</span>
+                    <i class="fas fa-check-circle text-green-500"></i>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="relative">
+                    <div class="h-2 bg-gray-200 rounded-full">
+                        <div class="h-2 bg-blue-600 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <div class="absolute top-5 left-0 flex justify-between w-full">
+                        <div class="text-xs text-gray-600 font-medium">Personal Info</div>
+                        <div class="text-xs text-gray-600 font-medium">Experience</div>
+                        <div class="text-xs text-gray-600 font-medium">Skills</div>
+                        <div class="text-xs text-gray-600 font-medium">Preview</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form class="space-y-8" id="resume-form">
+            <!-- Personal Information -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-6">Personal Information</h2>
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="John Doe"/>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700">Professional Title</label>
+                        <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Senior Software Engineer"/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="john@example.com"/>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <input type="tel" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="+1 (555) 000-0000"/>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700">Location</label>
+                        <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="New York, NY"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-6">Professional Summary</h2>
+                <div>
+                    <textarea rows="4" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Write a compelling summary of your professional background and key achievements..."></textarea>
+                    <p class="mt-2 text-sm text-gray-500">Maximum 250 words</p>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="bg-white shadow rounded-lg p-6" id="education-section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">Education</h2>
+                    <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-plus mr-2"></i>
+                        Add Education
+                    </button>
+                </div>
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg p-4 relative">
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Institution Name</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="University Name"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Degree/Certification</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Bachelor of Science"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Field of Study</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Computer Science"/>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Graduation Year</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="2023"/>
+                            </div>
+                            <div class="sm:col-span-1">
+                                <label class="block text-sm font-medium text-gray-700">GPA</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="3.8"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Experience -->
+            <div class="bg-white shadow rounded-lg p-6" id="experience-section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">Work Experience</h2>
+                    <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-plus mr-2"></i>
+                        Add Experience
+                    </button>
+                </div>
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg p-4 relative">
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Company Name</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Company Name"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Position</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Job Title"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Start Date</label>
+                                <input type="date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">End Date</label>
+                                <input type="date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">Job Description</label>
+                                <textarea rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Describe your responsibilities and achievements..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="bg-white shadow rounded-lg p-6" id="skills-section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">Skills</h2>
+                    <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-plus mr-2"></i>
+                        Add Skill
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div class="relative flex items-center space-x-3 border border-gray-200 rounded-lg p-3">
+                        <div class="flex-1">
+                            <input type="text" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Skill name"/>
+                        </div>
+                        <select class="block w-32 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <option>Beginner</option>
+                            <option>Intermediate</option>
+                            <option>Advanced</option>
+                            <option>Expert</option>
+                        </select>
+                        <button type="button" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="bg-white shadow rounded-lg p-6" id="projects-section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">Projects</h2>
+                    <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-plus mr-2"></i>
+                        Add Project
+                    </button>
+                </div>
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg p-4 relative">
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Project Name</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Project Name"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Project URL</label>
+                                <input type="url" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="https://example.com/project"/>
+                            </div>
+                            <div class="sm:col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">Project Description</label>
+                                <textarea rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Describe your project, technologies used and your contributions..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications -->
+            <div class="bg-white shadow rounded-lg p-6" id="certifications-section">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">Certifications</h2>
+                    <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fas fa-plus mr-2"></i>
+                        Add Certification
+                    </button>
+                </div>
+                <div class="space-y-6">
+                    <div class="border border-gray-200 rounded-lg p-4 relative">
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Certification Name</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Certification Name"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Issuing Organization</label>
+                                <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Organization Name"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Issue Date</label>
+                                <input type="date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Expiration Date (optional)</label>
+                                <input type="date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-between">
+                <div class="space-x-3">
+                    <button type="button" id="preview-button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                        <i class="fas fa-eye mr-2"></i>
+                        Preview
+                    </button>
+                    <button type="button" id="download-button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
+                        <i class="fas fa-download mr-2"></i>
+                        Download PDF
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Resume Preview Modal -->
+        <div id="preview-modal" class="fixed inset-0 z-10 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"></span>
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-medium text-gray-900" id="modal-title">Resume Preview</h3>
+                            <div class="flex items-center space-x-4">
+                                <label for="template-select" class="text-sm text-gray-700">Template:</label>
+                                <select id="template-select" class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <option value="template1">Classic</option>
+                                    <option value="template2">Modern</option>
+                                </select>
+                            </div>
+                            <button type="button" id="close-preview" class="text-gray-400 hover:text-gray-500">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="mt-4 overflow-y-auto max-h-[70vh]" id="resume-preview">
+                            <!-- Resume preview content will be inserted here -->
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="button" id="download-preview" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 sm:ml-3 sm:w-auto sm:text-sm">
+                            Download PDF
+                        </button>
+                        <button type="button" id="close-preview-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-16 pt-8 pb-6 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <img class="h-8 w-auto mb-4" src="/static/img/logo.png" alt="Logo"/>
+                    <p class="text-sm text-gray-500">Create professional resumes that stand out.</p>
+                </div>
+                <!-- <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase">Resources</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900">Resume Templates</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900">CV Examples</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase">Company</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900">About Us</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900">Contact</a></li>
+                    </ul>
+                </div> -->
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-200 text-center">
+                <p class="text-sm text-gray-500">© 2025 JobMatch. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        let selectedTemplate = 'template1'; // Default template
+
+        // Collect all form data
+        function collectResumeData() {
+            const fullName = document.querySelector('input[placeholder="John Doe"]').value || "John Doe";
+            const professionalTitle = document.querySelector('input[placeholder="Senior Software Engineer"]').value || "Senior Software Engineer";
+            const email = document.querySelector('input[placeholder="john@example.com"]').value || "john@example.com";
+            const phone = document.querySelector('input[placeholder="+1 (555) 000-0000"]').value || "+1 (555) 000-0000";
+            const location = document.querySelector('input[placeholder="New York, NY"]').value || "New York, NY";
+            const summary = document.querySelector('textarea[placeholder="Write a compelling summary of your professional background and key achievements..."]').value || "Experienced professional.";
+
+            const educationItems = Array.from(document.querySelectorAll('#education-section .border.border-gray-200')).map(item => ({
+                institution: item.querySelector('input[placeholder="University Name"]').value || "University Name",
+                degree: item.querySelector('input[placeholder="Bachelor of Science"]').value || "Bachelor of Science",
+                field: item.querySelector('input[placeholder="Computer Science"]').value || "Computer Science",
+                year: item.querySelector('input[placeholder="2023"]').value || "2023",
+                gpa: item.querySelector('input[placeholder="3.8"]').value || "3.8"
+            }));
+
+            const experienceItems = Array.from(document.querySelectorAll('#experience-section .border.border-gray-200')).map(item => ({
+                company: item.querySelector('input[placeholder="Company Name"]').value || "Company Name",
+                position: item.querySelector('input[placeholder="Job Title"]').value || "Job Title",
+                startDate: item.querySelector('input[type="date"]:first-of-type').value || "2020-01-01",
+                endDate: item.querySelector('input[type="date"]:last-of-type').value || "Present",
+                description: item.querySelector('textarea').value || "Responsibilities included project management."
+            }));
+
+            const skillItems = Array.from(document.querySelectorAll('#skills-section .border.border-gray-200')).map(item => ({
+                skill: item.querySelector('input[placeholder="Skill name"]').value || "Skill Name",
+                level: item.querySelector('select').value || "Intermediate"
+            }));
+
+            const projectItems = Array.from(document.querySelectorAll('#projects-section .border.border-gray-200')).map(item => ({
+                name: item.querySelector('input[placeholder="Project Name"]').value || "Project Name",
+                url: item.querySelector('input[placeholder="https://example.com/project"]').value || "https://example.com/project",
+                description: item.querySelector('textarea').value || "Project description"
+            }));
+
+            const certificationItems = Array.from(document.querySelectorAll('#certifications-section .border.border-gray-200')).map(item => ({
+                name: item.querySelector('input[placeholder="Certification Name"]').value || "Certification Name",
+                organization: item.querySelector('input[placeholder="Organization Name"]').value || "Organization Name",
+                issueDate: item.querySelector('input[type="date"]:first-of-type').value || "2020-01-01",
+                expirationDate: item.querySelector('input[type="date"]:last-of-type').value || "N/A"
+            }));
+
+            return {
+                personal: { fullName, professionalTitle, email, phone, location },
+                summary,
+                education: educationItems,
+                experience: experienceItems,
+                skills: skillItems,
+                projects: projectItems,
+                certifications: certificationItems
+            };
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            if (!dateString || dateString === 'Present' || dateString === 'N/A') return dateString || 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+
+        // Template 1: Classic
+        function generateTemplate1(data, context) {
+            const isPreview = context === 'preview';
+            const padding = isPreview ? '20px' : '40px';
+            const fontSizeH1 = isPreview ? '24px' : '28px';
+            const fontSizeH2 = '18px';
+            const fontSizeH3 = isPreview ? '15px' : '16px';
+            const fontSizeP = isPreview ? '13px' : '14px';
+
+            return `
+                <div style="font-family: 'Inter', sans-serif; max-width: 800px; margin: 0 auto; padding: ${padding}; color: #333;">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="font-size: ${fontSizeH1}; font-weight: 700; margin: 0; color: #000;">${data.personal.fullName}</h1>
+                        <p style="font-size: ${isPreview ? '16px' : '18px'}; color: #666; margin: 5px 0;">${data.personal.professionalTitle}</p>
+                        <div style="margin-top: 10px; font-size: ${fontSizeP};">
+                            <span style="margin: 0 10px;">${data.personal.email}</span> |
+                            <span style="margin: 0 10px;">${data.personal.phone}</span> |
+                            <span style="margin: 0 10px;">${data.personal.location}</span>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Professional Summary</h2>
+                        <p style="font-size: ${fontSizeP}; line-height: 1.5; text-align: justify;">${data.summary}</p>
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Experience</h2>
+                        ${data.experience.map(exp => `
+                            <div style="margin-bottom: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${exp.position}</h3>
+                                    <span style="font-size: ${fontSizeP}; color: #666;">${formatDate(exp.startDate)} - ${formatDate(exp.endDate)}</span>
+                                </div>
+                                <p style="font-size: ${fontSizeP}; font-weight: 500; margin: 0 0 5px 0; color: #666;">${exp.company}</p>
+                                <p style="font-size: ${fontSizeP}; line-height: 1.5; text-align: justify;">${exp.description}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Education</h2>
+                        ${data.education.map(edu => `
+                            <div style="margin-bottom: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${edu.institution}</h3>
+                                    <span style="font-size: ${fontSizeP}; color: #666;">${edu.year}</span>
+                                </div>
+                                <p style="font-size: ${fontSizeP}; margin: 0; color: #666;">${edu.degree} in ${edu.field}</p>
+                                ${edu.gpa ? `<p style="font-size: ${fontSizeP}; color: #777; margin: 2px 0 0 0;">GPA: ${edu.gpa}</p>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Skills</h2>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            ${data.skills.map(skill => `
+                                <div style="background-color: #f5f5f5; border-radius: 5px; padding: 5px 10px; font-size: ${fontSizeP};">
+                                    <span style="font-weight: 500;">${skill.skill}</span>
+                                    <span style="margin-left: 5px; color: #666; font-size: 12px;">(${skill.level})</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Projects</h2>
+                        ${data.projects.map(project => `
+                            <div style="margin-bottom: 15px;">
+                                <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${project.name}</h3>
+                                <p style="font-size: ${fontSizeP}; margin: 2px 0;">${project.url}</p>
+                                <p style="font-size: ${fontSizeP}; line-height: 1.5; text-align: justify;">${project.description}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Certifications</h2>
+                        ${data.certifications.map(cert => `
+                            <div style="margin-bottom: 15px;">
+                                <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${cert.name}</h3>
+                                <p style="font-size: ${fontSizeP}; margin: 2px 0;">${cert.organization}</p>
+                                <p style="font-size: ${fontSizeP}; margin: 2px 0;">Issued: ${formatDate(cert.issueDate)} ${cert.expirationDate !== 'N/A' ? `| Expires: ${formatDate(cert.expirationDate)}` : ''}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Template 2: Modern (Two-column layout)
+        function generateTemplate2(data, context) {
+            const isPreview = context === 'preview';
+            const padding = isPreview ? '20px' : '40px';
+            const fontSizeH1 = isPreview ? '24px' : '28px';
+            const fontSizeH2 = '18px';
+            const fontSizeH3 = isPreview ? '15px' : '16px';
+            const fontSizeP = isPreview ? '13px' : '14px';
+
+            return `
+                <div style="font-family: 'Inter', sans-serif; max-width: 800px; margin: 0 auto; padding: ${padding}; color: #333; display: flex; gap: 20px;">
+                    <div style="width: 35%;">
+                        <!-- Left column -->
+                        <div style="margin-bottom: 20px;">
+                            <h1 style="font-size: ${fontSizeH1}; font-weight: 700; margin: 0; color: #000;">${data.personal.fullName}</h1>
+                            <p style="font-size: ${isPreview ? '16px' : '18px'}; color: #666; margin: 5px 0;">${data.personal.professionalTitle}</p>
+                            <div style="margin-top: 10px; font-size: ${fontSizeP};">
+                                <p>${data.personal.email}</p>
+                                <p>${data.personal.phone}</p>
+                                <p>${data.personal.location}</p>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="font-size: ${fontSizeH2}; font-weight: 600; margin-bottom: 10px; color: #000;">Skills</h2>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                ${data.skills.map(skill => `
+                                    <div style="background-color: #f5f5f5; border-radius: 4px; padding: 4px 8px; font-size: ${fontSizeP};">
+                                        <span style="font-weight: 500;">${skill.skill}</span>
+                                        <span style="margin-left: 4px; color: #666; font-size: 12px;">(${skill.level})</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="font-size: ${fontSizeH2}; font-weight: 600; margin-bottom: 10px; color: #000;">Certifications</h2>
+                            ${data.certifications.map(cert => `
+                                <div style="margin-bottom: 10px;">
+                                    <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${cert.name}</h3>
+                                    <p style="font-size: ${fontSizeP}; margin: 2px 0;">${cert.organization}</p>
+                                    <p style="font-size: ${fontSizeP}; margin: 2px 0;">Issued: ${formatDate(cert.issueDate)} ${cert.expirationDate !== 'N/A' ? `| Expires: ${formatDate(cert.expirationDate)}` : ''}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div style="width: 65%;">
+                        <!-- Right column -->
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Professional Summary</h2>
+                            <p style="font-size: ${fontSizeP}; line-height: 1.5; text-align: justify;">${data.summary}</p>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Experience</h2>
+                            ${data.experience.map(exp => `
+                                <div style="margin-bottom: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${exp.position}</h3>
+                                        <span style="font-size: ${fontSizeP}; color: #666;">${formatDate(exp.startDate)} - ${formatDate(exp.endDate)}</span>
+                                    </div>
+                                    <p style="font-size: ${fontSizeP}; font-weight: 500; margin: 0 0 5px 0; color: #666;">${exp.company}</p>
+                                    <p style="font-size: ${fontSizeP}; line-height: 1.5; text-align: justify;">${exp.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Education</h2>
+                            ${data.education.map(edu => `
+                                <div style="margin-bottom: 10px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${edu.institution}</h3>
+                                        <span style="font-size: ${fontSizeP}; color: #666;">${edu.year}</span>
+                                    </div>
+                                    <p style="font-size: ${fontSizeP}; margin: 0; color: #666;">${edu.degree} in ${edu.field}</p>
+                                    ${edu.gpa ? `<p style="font-size: ${fontSizeP}; color: #777; margin: 2px 0 0 0;">GPA: ${edu.gpa}</p>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <h2 style="font-size: ${fontSizeH2}; font-weight: 600; padding-bottom: 8px; border-bottom: 2px solid #eaeaea; margin-bottom: 15px; color: #000;">Projects</h2>
+                            ${data.projects.map(project => `
+                                <div style="margin-bottom: 15px;">
+                                    <h3 style="font-size: ${fontSizeH3}; font-weight: 600; margin: 0; color: #000;">${project.name}</h3>
+                                    <p style="font-size: ${fontSizeP}; margin: 2px 0;">${project.url}</p>
+                                    <p style="font-size: ${fontSizeP}; line-height: 1.5; text-align: justify;">${project.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to get resume HTML based on selected template
+        function getResumeHTML(data, context) {
+            if (selectedTemplate === 'template1') {
+                return generateTemplate1(data, context);
+            } else if (selectedTemplate === 'template2') {
+                return generateTemplate2(data, context);
+            }
+            return generateTemplate1(data, context); // Default to template1
+        }
+
+        // Show preview in modal
+        function showPreview() {
+            const data = collectResumeData();
+            const previewHTML = getResumeHTML(data, 'preview');
+            document.getElementById('resume-preview').innerHTML = previewHTML;
+            document.getElementById('preview-modal').classList.remove('hidden');
+        }
+
+        // Generate PDF
+        function generateResume() {
+            const data = collectResumeData();
+            const resumeHTML = getResumeHTML(data, 'pdf');
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>${data.personal.fullName} - Resume</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+                </head>
+                <body>${resumeHTML}</body>
+                </html>
+            `);
+            const element = printWindow.document.body;
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `${data.personal.fullName.replace(/\s+/g, '_')}_Resume.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save().then(() => {
+                setTimeout(() => printWindow.close(), 1000);
+            });
+        }
+
+        // Add remove button to entries
+        function addRemoveButton(entry) {
+            const removeBtn = document.createElement('button');
+            removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            removeBtn.className = 'p-2 text-red-500 hover:bg-red-50 absolute top-2 right-2';
+            removeBtn.onclick = () => entry.remove();
+            entry.style.position = 'relative';
+            entry.appendChild(removeBtn);
+        }
+
+        // Add education entry
+        function addEducationEntry() {
+            const container = document.querySelector('#education-section .space-y-6');
+            const template = document.querySelector('#education-section .border.border-gray-200').cloneNode(true);
+            template.querySelectorAll('input').forEach(input => input.value = '');
+            addRemoveButton(template);
+            container.appendChild(template);
+        }
+
+        // Add experience entry
+        function addExperienceEntry() {
+            const container = document.querySelector('#experience-section .space-y-6');
+            const template = document.querySelector('#experience-section .border.border-gray-200').cloneNode(true);
+            template.querySelectorAll('input, textarea').forEach(input => input.value = '');
+            addRemoveButton(template);
+            container.appendChild(template);
+        }
+
+        // Add skill entry
+        function addSkillEntry() {
+            const container = document.querySelector('#skills-section .grid');
+            const template = document.querySelector('#skills-section .border.border-gray-200').cloneNode(true);
+            template.querySelector('input').value = '';
+            template.querySelector('select').selectedIndex = 0;
+            const removeBtn = template.querySelector('button');
+            if (removeBtn) removeBtn.onclick = () => template.remove();
+            container.appendChild(template);
+        }
+
+        // Add project entry
+        function addProjectEntry() {
+            const container = document.querySelector('#projects-section .space-y-6');
+            const template = document.querySelector('#projects-section .border.border-gray-200').cloneNode(true);
+            template.querySelectorAll('input, textarea').forEach(input => input.value = '');
+            addRemoveButton(template);
+            container.appendChild(template);
+        }
+
+        // Add certification entry
+        function addCertificationEntry() {
+            const container = document.querySelector('#certifications-section .space-y-6');
+            const template = document.querySelector('#certifications-section .border.border-gray-200').cloneNode(true);
+            template.querySelectorAll('input').forEach(input => input.value = '');
+            addRemoveButton(template);
+            container.appendChild(template);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add remove buttons to initial entries
+            document.querySelectorAll('#education-section .border.border-gray-200').forEach(addRemoveButton);
+            document.querySelectorAll('#experience-section .border.border-gray-200').forEach(addRemoveButton);
+            document.querySelectorAll('#projects-section .border.border-gray-200').forEach(addRemoveButton);
+            document.querySelectorAll('#certifications-section .border.border-gray-200').forEach(addRemoveButton);
+            document.querySelectorAll('#skills-section .border.border-gray-200 button').forEach(btn => {
+                btn.onclick = () => btn.parentElement.remove();
+            });
+
+            // Add entry buttons
+            document.querySelector('#education-section button').addEventListener('click', addEducationEntry);
+            document.querySelector('#experience-section button').addEventListener('click', addExperienceEntry);
+            document.querySelector('#skills-section button').addEventListener('click', addSkillEntry);
+            document.querySelector('#projects-section button').addEventListener('click', addProjectEntry);
+            document.querySelector('#certifications-section button').addEventListener('click', addCertificationEntry);
+
+            // Preview and download buttons
+            document.getElementById('preview-button').addEventListener('click', showPreview);
+            document.getElementById('download-button').addEventListener('click', generateResume);
+            document.getElementById('download-preview').addEventListener('click', generateResume);
+
+            // Close modal
+            document.getElementById('close-preview').addEventListener('click', () => {
+                document.getElementById('preview-modal').classList.add('hidden');
+            });
+            document.getElementById('close-preview-btn').addEventListener('click', () => {
+                document.getElementById('preview-modal').classList.add('hidden');
+            });
+
+            // Template selection
+            document.getElementById('template-select').addEventListener('change', function() {
+                selectedTemplate = this.value;
+                showPreview(); // Update preview when template changes
+            });
+        });
+    </script>
+</body>
+</html>

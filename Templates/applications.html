@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Job Listings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <img class="h-8 w-auto" src="static\img\logo.png" alt="Logo"/>
+                    <span class="ml-3 text-xl font-semibold text-gray-900">Job Listings</span>
+                </div>
+                <div class="flex items-center">
+                    <a href="/apptracker" class="ml-4 text-blue-600 px-4 py-2 text-sm font-medium rounded hover:bg-blue-100">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="max-w-8xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-12 gap-8">
+            <div class="col-span-8">
+                <h1 class="text-2xl font-bold mb-6">Available Positions</h1>
+
+                {% if message %}
+                <div id="alert" class="mb-6 p-4 rounded-lg {% if message_type == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %} flex justify-between items-center">
+                    <span>{{ message }}</span>
+                    <button onclick="document.getElementById('alert').style.display='none'" class="text-current hover:text-gray-900">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endif %}
+
+                <div id="job-listings" class="space-y-6">
+                    {% for job in jobs %}
+                    <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow job-item" 
+                         data-employment-type="{{ job.employment_type }}" 
+                         data-location="{{ job.location|lower }}" 
+                         data-company-name="{{ job.company_name|lower }}" 
+                         data-salary-from="{{ job.salary_from }}" 
+                         data-salary-to="{{ job.salary_to }}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-semibold">{{ job.job_title }}</h3>
+                                <p class="text-gray-600 mt-2">{{ job.employment_type }} • {{ job.location }} • {{ job.company_name }}</p>
+                                <div class="mt-2 space-x-2">
+                                    {% for skill in job.skills|default([]) %}
+                                    <span class="inline-block px-2 py-1 text-sm bg-gray-100 rounded">{{ skill }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-semibold">${{ job.salary_from }} - ${{ job.salary_to }}</p>
+                                <p class="text-sm text-gray-500">Annual Salary</p>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-gray-700">{{ job.job_description }}</p>
+                        <h4 class="text-lg font-semibold mt-6">Key Responsibilities</h4>
+                        <ul class="list-disc list-inside mt-2">
+                            <li class="text-gray-700">{{ job.key_responsibilities }}</li>
+                        </ul>
+                        <form method="POST" action="{{ url_for('apply_for_job', job_post_id=job.id) }}" class="mt-4">
+                            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+                                Apply Now
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="col-span-4">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-medium mb-4">Filter Jobs</h2>
+                    <form id="filter-form" onsubmit="filterJobs(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
+                                <select name="employment_type" class="w-full border-gray-300 focus:border-custom focus:ring-custom rounded-button">
+                                    <option value="">All Types</option>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                    <option value="Contract">Contract</option>
+                                    <option value="Remote">Remote</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                                <input type="text" name="location" class="w-full border-gray-300 focus:border-custom focus:ring-custom rounded-button" placeholder="Enter location"/>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                                <input type="text" name="company_name" class="w-full border-gray-300 focus:border-custom focus:ring-custom rounded-button" placeholder="Enter company name"/>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Salary Range</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="number" name="salary_from" placeholder="Min" class="w-full border-gray-300 focus:border-custom focus:ring-custom rounded-button"/>
+                                    <input type="number" name="salary_to" placeholder="Max" class="w-full border-gray-300 focus:border-custom focus:ring-custom rounded-button"/>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+                                Apply Filters
+                            </button>
+                            <button type="reset-filters" class="w-full border border-gray-300 text-gray-700 py-2 px-4 rounded-lg !rounded-button hover:bg-gray-50">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="bg-white border-t mt-8">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <p class="text-center text-gray-500 text-sm">© 2025 JobMatch. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function filterJobs(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get filter values
+            const form = document.getElementById('filter-form');
+            const employmentType = form.querySelector('[name="employment_type"]').value;
+            const location = form.querySelector('[name="location"]').value.toLowerCase();
+            const companyName = form.querySelector('[name="company_name"]').value.toLowerCase();
+            const salaryFrom = parseInt(form.querySelector('[name="salary_from"]').value) || 0;
+            const salaryTo = parseInt(form.querySelector('[name="salary_to"]').value) || Infinity;
+
+            // Get all job items
+            const jobItems = document.querySelectorAll('.job-item');
+
+            // Filter jobs
+            jobItems.forEach(job => {
+                const jobEmploymentType = job.getAttribute('data-employment-type');
+                const jobLocation = job.getAttribute('data-location');
+                const jobCompanyName = job.getAttribute('data-company-name');
+                const jobSalaryFrom = parseInt(job.getAttribute('data-salary-from'));
+                const jobSalaryTo = parseInt(job.getAttribute('data-salary-to'));
+
+                // Check if job matches filters
+                const matchesEmploymentType = !employmentType || jobEmploymentType === employmentType;
+                const matchesLocation = !location || jobLocation.includes(location);
+                const matchesCompanyName = !companyName || jobCompanyName.includes(companyName);
+                const matchesSalary = (jobSalaryFrom >= salaryFrom && jobSalaryTo <= salaryTo) || 
+                                     (!salaryFrom && !salaryTo); // Show all if no salary range specified
+
+                // Show or hide job based on filters
+                if (matchesEmploymentType && matchesLocation && matchesCompanyName && matchesSalary) {
+                    job.style.display = 'block';
+                } else {
+                    job.style.display = 'none';
+                }
+            });
+             // Reset filters
+            document.getElementById('reset-filters').addEventListener('click', () => {
+                document.getElementById('data-employment-type').value = '';
+                document.getElementById('data-location').value = '';
+                document.getElementById('data-company-name').value = '';
+                document.getElementById('data-salary-from').value = '';
+                document.getElementById('data-salary-to').value = '';
+                jobItems();
+            });
+        }
+    </script>
+</body>
+</html>

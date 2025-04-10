@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --user-bg: #e0e7ff;
+            --bot-bg: #f8fafc;
+            --text: #1e293b;
+            --light-text: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 420px;
+            height: 90vh;
+            max-height: 700px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        #exit-chat {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        
+        #exit-chat:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: var(--user-bg);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            color: var(--text);
+        }
+
+        .bot-message {
+            background: var(--bot-bg);
+            align-self: flex-start;
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--light-text);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .input-area {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        #message-input:focus {
+            border-color: var(--primary);
+        }
+
+        #send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+        }
+
+        #send-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            padding: 10px 14px;
+            background: var(--bot-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            align-self: flex-start;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--light-text);
+            border-radius: 50%;
+            animation: typing 1s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* Scrollbar styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>AI Assistant</h2>
+            <button id="exit-chat">
+                <i class="fas fa-sign-out-alt"></i> Exit
+            </button>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will appear here -->
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+            <button id="send-btn" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Get user role from the server (using Flask/Jinja2 template variable)
+        // This should match how you store it in your User model
+        const userRole = "{{ current_user.role if current_user else '' }}";
+        
+        // DOM Elements
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const exitBtn = document.getElementById('exit-chat');
+
+        // Initial bot message
+        setTimeout(() => {
+            addMessage("Hello! How can I assist you today?", 'bot');
+        }, 500);
+
+        // Enable/disable send button based on input
+        messageInput.addEventListener('input', () => {
+            sendBtn.disabled = messageInput.value.trim() === '';
+        });
+
+        // Send message on Enter or button click
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !sendBtn.disabled) sendMessage();
+        });
+        sendBtn.addEventListener('click', sendMessage);
+
+        // Exit chat function - redirects based on user role
+        exitBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to exit the chat?')) {
+                // Redirect based on role (company/seeker)
+                if (userRole === 'company') {
+                    window.location.href = '/compapptrack';
+                } else if (userRole === 'seeker') {
+                    window.location.href = '/apptracker';
+                } else {
+                    window.location.href = '/'; // Fallback for unknown roles
+                }
+            }
+        });
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                ${text}
+                <div class="message-time">${time}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        // Hide typing indicator
+        function hideTyping() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        // Scroll to bottom of chat
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Send message to server
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            messageInput.value = '';
+            sendBtn.disabled = true;
+            showTyping();
+
+            // Send to your Flask backend
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'message=' + encodeURIComponent(message),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                hideTyping();
+                if (data.response) {
+                    addMessage(data.response, 'bot');
+                } else {
+                    addMessage("I didn't get a response. Please try again.", 'bot');
+                }
+            })
+            .catch(error => {
+                hideTyping();
+                console.error('Error:', error);
+                addMessage("Sorry, there was an error processing your request.", 'bot');
+            });
+        }
+
+        // Focus input on page load
+        messageInput.focus();
+    </script>
+</body>
+</html>

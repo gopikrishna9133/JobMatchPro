@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch - Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container max-w-3xl mx-auto p-6">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <!-- Header -->
+            <div class="bg-indigo-600 p-6 text-white">
+                <h1 class="text-2xl font-bold">Your Profile</h1>
+                <p class="mt-1 text-sm opacity-90">View your professional details</p>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="p-6 space-y-8">
+                <!-- Personal Information Section -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Personal Information</h2>
+                    <dl class="grid grid-cols-1 gap-y-6 sm:grid-cols-2">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-600">Full Name</dt>
+                            <dd class="mt-1 text-sm text-gray-900 font-medium">{{ profile.full_name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-600">Email</dt>
+                            <dd class="mt-1 text-sm text-gray-900 font-medium">{{ profile.email }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-600">Phone</dt>
+                            <dd class="mt-1 text-sm text-gray-900 font-medium">{{ profile.phone }}</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <!-- Education & Experience Section -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Education & Experience</h2>
+                    <dl class="grid grid-cols-1 gap-y-6 sm:grid-cols-2">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-600">Education Level</dt>
+                            <dd class="mt-1 text-sm text-gray-900 font-medium">{{ profile.education or 'Not specified' }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-600">Work Experience</dt>
+                            <dd class="mt-1 text-sm text-gray-900 font-medium">{{ profile.experience or 'Not specified' }}</dd>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <dt class="text-sm font-medium text-gray-600">Skills</dt>
+                            <dd class="mt-1 text-sm text-gray-900 font-medium whitespace-pre-wrap bg-gray-50 p-3 rounded-md">{{ profile.skills or 'Not specified' }}</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <!-- Resume Section -->
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Resume</h2>
+                    <div class="mt-4">
+                        <a href="{{ url_for('static', filename='uploads/' + profile.resume_path) }}" 
+                           class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors duration-200" 
+                           target="_blank">
+                            <i class="fas fa-file-pdf mr-2"></i> View Resume (PDF)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 p-4 text-center">
+                <a href="{{ url_for('app_tracker') }}" 
+                   class="text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

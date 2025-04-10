@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>JobMatch - Find Your Dream Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.min.css" rel="stylesheet"/>
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.min.js"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000" data-border-radius="small"></script>
+</head>
+<body class="bg-gray-50">
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+        <nav class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex-shrink-0">
+                        <img class="h-8 w-auto" src="static\img\logo.png" alt="JobMatch"/>
+                    </a>
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="#" class="text-custom hover:text-custom-600 px-3 py-2 text-sm font-medium">For Recruiters</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">For Job Seekers</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button class="!rounded-button bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 mr-3" onclick="window.location.href='/login'">Log in</button>
+
+                    <button class="!rounded-button bg-custom text-white px-4 py-2 text-sm font-medium hover:bg-custom-600" onclick="window.location.href='/register'">Sign up</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="text-center">
+        <div class="w-full h-[400px] mb-12 overflow-hidden">
+            <!-- Updated image path -->
+            <img src="static\img\landing.jpg" alt="Job recruitment header image" class="w-full h-full object-cover"/>
+        </div>
+        <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            <span class="block">Find Your Dream Job</span>
+            <span class="block text-custom">Connect with Top Companies</span>
+        </h1>
+        <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+            Search through thousands of job opportunities from leading companies worldwide. Your next career move starts here.
+        </p>
+    </div>
+    
+
+                <div class="mt-10 max-w-3xl mx-auto">
+                    <div class="bg-white shadow-lg rounded-lg p-6">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+                            <div class="relative">
+                                <input type="text" class="w-full !rounded-button border-gray-300 pl-10 pr-4 py-2 focus:ring-custom focus:border-custom" placeholder="Job title or keyword"/>
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <input type="text" class="w-full !rounded-button border-gray-300 pl-10 pr-4 py-2 focus:ring-custom focus:border-custom" placeholder="Location"/>
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-map-marker-alt text-gray-400"></i>
+                                </div>
+                            </div>
+                            <button class="!rounded-button w-full bg-custom text-white py-2 hover:bg-custom-600">
+                                Search Jobs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray-50 py-12 sm:py-16">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-3 text-center">
+                    <div class="bg-white rounded-lg shadow-sm px-6 py-8">
+                        <p class="text-4xl font-bold text-custom">10,000+</p>
+                        <p class="mt-2 text-gray-600">Active Jobs</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm px-6 py-8">
+                        <p class="text-4xl font-bold text-custom">5,000+</p>
+                        <p class="mt-2 text-gray-600">Companies</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm px-6 py-8">
+                        <p class="text-4xl font-bold text-custom">25,000+</p>
+                        <p class="mt-2 text-gray-600">Successful Placements</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white py-12 sm:py-16">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-gray-900">Featured Jobs</h2>
+                    <p class="mt-4 text-lg text-gray-500">Discover opportunities from leading companies</p>
+                </div>
+                <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center">
+                            <img class="h-12 w-12 rounded-full" src="https://creatie.ai/ai/api/search-image?query=A sleek and modern tech company logo design with minimalist geometric shapes and a blue color scheme, displayed on a clean white background&width=48&height=48&orientation=squarish&flag=206b6ff5-0e3e-4768-81ea-11e16dabb727&flag=9e662743-2e20-4abc-bf5f-63abc5b92100" alt="Company logo"/>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Senior Software Engineer</h3>
+                                <p class="text-sm text-gray-500">TechCorp Solutions</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>San Francisco, CA</span>
+                            </div>
+                            <div class="mt-2 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-briefcase mr-2"></i>
+                                <span>5+ years experience</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-custom">Full-time</span>
+                            <span class="ml-2 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">Remote</span>
+                        </div>
+                        <button class="!rounded-button mt-4 w-full bg-custom text-white py-2 hover:bg-custom-600">Apply Now</button>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center">
+                            <img class="h-12 w-12 rounded-full" src="https://creatie.ai/ai/api/search-image?query=A modern marketing agency logo with creative and dynamic elements, featuring vibrant colors on a white background&width=48&height=48&orientation=squarish&flag=03425d72-c92a-4e14-ac25-6897280b53b0&flag=36062a2a-950a-4e23-9361-0851b5f5ce58" alt="Company logo"/>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Marketing Manager</h3>
+                                <p class="text-sm text-gray-500">Growth Marketing Co</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>New York, NY</span>
+                            </div>
+                            <div class="mt-2 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-briefcase mr-2"></i>
+                                <span>3+ years experience</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-custom">Full-time</span>
+                            <span class="ml-2 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">Hybrid</span>
+                        </div>
+                        <button class="!rounded-button mt-4 w-full bg-custom text-white py-2 hover:bg-custom-600">Apply Now</button>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center">
+                            <img class="h-12 w-12 rounded-full" src="https://creatie.ai/ai/api/search-image?query=A professional financial services company logo with sophisticated design elements and corporate blue tones on a white background&width=48&height=48&orientation=squarish&flag=2592acbb-3061-45b2-a8a0-d946eb876611&flag=5c106922-68a8-4efd-a3f4-53f13199ba87" alt="Company logo"/>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-medium text-gray-900">Financial Analyst</h3>
+                                <p class="text-sm text-gray-500">Global Finance Inc</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                <span>Chicago, IL</span>
+                            </div>
+                            <div class="mt-2 flex items-center text-sm text-gray-500">
+                                <i class="fas fa-briefcase mr-2"></i>
+                                <span>2+ years experience</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-custom">Full-time</span>
+                            <span class="ml-2 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-purple-100 text-purple-800">On-site</span>
+                        </div>
+                        <button class="!rounded-button mt-4 w-full bg-custom text-white py-2 hover:bg-custom-600">Apply Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray-50 py-12 sm:py-16">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-gray-900">How It Works</h2>
+                    <p class="mt-4 text-lg text-gray-500">Simple steps to start your journey</p>
+                </div>
+                <div class="mt-12">
+                    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        <div class="text-center">
+                            <div class="mx-auto h-12 w-12 text-custom">
+                                <i class="fas fa-user-circle text-4xl"></i>
+                            </div>
+                            <h3 class="mt-6 text-lg font-medium text-gray-900">Create Your Profile</h3>
+                            <p class="mt-2 text-base text-gray-500">Sign up and build your professional profile with your experience and skills</p>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="mx-auto h-12 w-12 text-custom">
+                                <i class="fas fa-search text-4xl"></i>
+                            </div>
+                            <h3 class="mt-6 text-lg font-medium text-gray-900">Search Jobs</h3>
+                            <p class="mt-2 text-base text-gray-500">Browse through thousands of relevant job opportunities</p>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="mx-auto h-12 w-12 text-custom">
+                                <i class="fas fa-check-circle text-4xl"></i>
+                            </div>
+                            <h3 class="mt-6 text-lg font-medium text-gray-900">Apply &amp; Get Hired</h3>
+                            <p class="mt-2 text-base text-gray-500">Apply to your desired positions and start your new career journey</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white py-12 sm:py-16">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-gray-900">Popular Categories</h2>
+                    <p class="mt-4 text-lg text-gray-500">Explore opportunities by category</p>
+                </div>
+                <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="group relative bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200">
+                        <div class="text-custom group-hover:text-custom-600">
+                            <i class="fas fa-laptop-code text-3xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-lg font-medium text-gray-900">Technology</h3>
+                        <p class="mt-2 text-sm text-gray-500">2,156 jobs available</p>
+                    </div>
+
+                    <div class="group relative bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200">
+                        <div class="text-custom group-hover:text-custom-600">
+                            <i class="fas fa-chart-line text-3xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-lg font-medium text-gray-900">Marketing</h3>
+                        <p class="mt-2 text-sm text-gray-500">1,843 jobs available</p>
+                    </div>
+
+                    <div class="group relative bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200">
+                        <div class="text-custom group-hover:text-custom-600">
+                            <i class="fas fa-coins text-3xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-lg font-medium text-gray-900">Finance</h3>
+                        <p class="mt-2 text-sm text-gray-500">1,567 jobs available</p>
+                    </div>
+
+                    <div class="group relative bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow duration-200">
+                        <div class="text-custom group-hover:text-custom-600">
+                            <i class="fas fa-users text-3xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-lg font-medium text-gray-900">Human Resources</h3>
+                        <p class="mt-2 text-sm text-gray-500">982 jobs available</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray-50 py-12 sm:py-16">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-gray-900">Trusted by Leading Companies</h2>
+                    <p class="mt-4 text-lg text-gray-500">Join thousands of companies already hiring on JobMatch</p>
+                </div>
+                <div class="mt-12">
+                    <div class="glide">
+                        <div class="glide__track" data-glide-el="track">
+                            <ul class="glide__slides">
+                                <li class="glide__slide">
+                                    <img class="h-12 mx-auto" src="https://creatie.ai/ai/api/search-image?query=A modern tech company logo design with minimalist elements and blue tones on a white background&width=160&height=48&orientation=landscape&flag=215fd26d-f9ae-493e-8970-4fddbabf2b86&flag=89449b79-95f1-4333-89f8-701ebbb3c3c3" alt="Company logo"/>
+                                </li>
+                                <li class="glide__slide">
+                                    <img class="h-12 mx-auto" src="https://creatie.ai/ai/api/search-image?query=A professional corporate logo design with sophisticated elements and neutral colors on a white background&width=160&height=48&orientation=landscape&flag=95dee31c-80ef-4926-a7d6-18138aba37b3&flag=33eaf9b2-e018-4944-bfc5-002ce12e88c1" alt="Company logo"/>
+                                </li>
+                                <li class="glide__slide">
+                                    <img class="h-12 mx-auto" src="https://creatie.ai/ai/api/search-image?query=A creative agency logo design with modern typography and vibrant colors on a white background&width=160&height=48&orientation=landscape&flag=b581002e-1d77-4a74-8ad0-764bd611837e&flag=7015e720-748d-471c-a30b-91059dcb2947" alt="Company logo"/>
+                                </li>
+                                <li class="glide__slide">
+                                    <img class="h-12 mx-auto" src="https://creatie.ai/ai/api/search-image?query=A financial services company logo with elegant design elements and corporate colors on a white background&width=160&height=48&orientation=landscape&flag=3fcf0c13-36fd-469f-8d8c-b012aedca09e&flag=4f695527-bbe5-47cc-8e0e-ef03a149eacc" alt="Company logo"/>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="glide__bullets" data-glide-el="controls[nav]">
+                            <button class="glide__bullet" data-glide-dir="=0"></button>
+                            <button class="glide__bullet" data-glide-dir="=1"></button>
+                            <button class="glide__bullet" data-glide-dir="=2"></button>
+                            <button class="glide__bullet" data-glide-dir="=3"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-custom">
+            <div class="max-w-8xl mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                        Ready to Take the Next Step?
+                    </h2>
+                    <p class="mt-4 text-lg text-blue-100">
+                        Join thousands of professionals finding their dream jobs
+                    </p>
+                    <div class="mt-8 flex justify-center gap-x-4">
+                        <button class="!rounded-button bg-white text-custom px-8 py-3 text-base font-medium hover:bg-gray-50">
+                            Post a Job
+                        </button>
+                        <button class="!rounded-button bg-custom-600 text-white px-8 py-3 text-base font-medium border-2 border-white hover:bg-custom-700">
+                            Find Jobs
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900">
+        <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="py-12 grid grid-cols-2 gap-8 md:grid-cols-4">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">About</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Careers</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Help Center</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Terms of Service</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Privacy Policy</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Resources</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Blog</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Guides</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white">Events</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Follow Us</h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white flex items-center">
+                                <i class="fab fa-twitter mr-2"></i> Twitter
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white flex items-center">
+                                <i class="fab fa-linkedin mr-2"></i> LinkedIn
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-white flex items-center">
+                                <i class="fab fa-facebook mr-2"></i> Facebook
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 py-8">
+                <p class="text-base text-gray-400 text-center">© 2025 JobMatch. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        new Glide('.glide', {
+            type: 'carousel',
+            perView: 4,
+            autoplay: 3000,
+            animationDuration: 1000,
+            gap: 32,
+            breakpoints: {
+                1024: {
+                    perView: 3
+                },
+                768: {
+                    perView: 2
+                },
+                640: {
+                    perView: 1
+                }
+            }
+        }).mount()
+    </script>
+
+
+</body></html>
