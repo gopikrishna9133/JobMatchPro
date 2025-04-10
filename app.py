@@ -1202,7 +1202,6 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-app = Flask(__name__)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # Get the port Heroku assigns or use 5000 as default
