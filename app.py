@@ -722,7 +722,7 @@ def load_user(user_id):
 
 @app.route('/')
 def landing():
-    return render_template('landing.html')
+    return render_template('/Templetes/landing.html')
 
 
 
