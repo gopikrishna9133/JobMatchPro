@@ -1201,10 +1201,11 @@ if __name__ == '__main__':
     logger.info('Starting Flask application...')
     app.run(debug=True)
 
-
+logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Get the port Heroku assigns or use 5000 as default
+    # Ensure that you bind to the correct port in Heroku
+    port = int(os.environ.get('PORT', 5000))  # Use the PORT environment variable for Heroku
     app.run(host='0.0.0.0', port=port, debug=False)
 
 
