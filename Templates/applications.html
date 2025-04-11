@@ -130,7 +130,12 @@
 
                 <div id="job-listings" class="space-y-6">
                     {% for job in jobs %}
-                    <div class="job-item bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="job-item bg-white rounded-lg shadow-sm p-6 border border-gray-100"
+                         data-employment-type="{{ job.employment_type }}"
+                         data-location="{{ job.location.lower() }}"
+                         data-company-name="{{ job.company_name.lower() }}"
+                         data-salary-from="{{ job.salary_from }}"
+                         data-salary-to="{{ job.salary_to }}">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
                             <div class="mb-4 md:mb-0">
                                 <h3 class="text-xl font-semibold text-gray-900">{{ job.job_title }}</h3>
@@ -274,106 +279,129 @@
 
     <script>
         // Enhanced form submission with SweetAlert2
-        document.querySelectorAll('form[method="POST"]').forEach(form => {
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const { isConfirmed } = await Swal.fire({
-                    title: 'Confirm Application',
-                    html: `
-                        <div class="text-left">
-                            <p class="mb-3">Are you sure you want to apply for this position?</p>
-                            <div class="bg-blue-50 p-3 rounded-lg">
-                                <h4 class="font-medium text-blue-800">${this.closest('.job-item').querySelector('h3').textContent}</h4>
-                                <p class="text-sm text-blue-600">${this.closest('.job-item').querySelector('span:nth-of-type(1)').textContent}</p>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form[method="POST"]').forEach(form => {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const jobItem = this.closest('.job-item');
+                    const jobTitle = jobItem.querySelector('h3').textContent;
+                    const companyName = jobItem.querySelector('span:nth-of-type(1)').textContent;
+                    
+                    const { isConfirmed } = await Swal.fire({
+                        title: 'Confirm Application',
+                        html: `
+                            <div class="text-left">
+                                <p class="mb-3">Are you sure you want to apply for this position?</p>
+                                <div class="bg-blue-50 p-3 rounded-lg">
+                                    <h4 class="font-medium text-blue-800">${jobTitle}</h4>
+                                    <p class="text-sm text-blue-600">${companyName}</p>
+                                </div>
                             </div>
-                        </div>
-                    `,
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, apply now',
-                    cancelButtonText: 'Cancel',
-                    confirmButtonColor: '#3b82f6',
-                    cancelButtonColor: '#6b7280',
-                    reverseButtons: true
+                        `,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, apply now',
+                        cancelButtonText: 'Cancel',
+                        confirmButtonColor: '#3b82f6',
+                        cancelButtonColor: '#6b7280',
+                        reverseButtons: true
+                    });
+                    
+                    if (isConfirmed) {
+                        try {
+                            const formData = new FormData(this);
+                            const response = await fetch(this.action, {
+                                method: 'POST',
+                                headers: {
+                                    'Accept': 'application/json',
+                                },
+                                body: formData
+                            });
+                            
+                            if (response.redirected) {
+                                window.location.href = response.url;
+                            } else {
+                                const result = await response.json();
+                                if (result.success) {
+                                    Swal.fire({
+                                        title: 'Success',
+                                        text: result.message || 'Application submitted successfully!',
+                                        icon: 'success',
+                                        confirmButtonColor: '#3b82f6'
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: result.message || 'Failed to submit application',
+                                        icon: 'error',
+                                        confirmButtonColor: '#3b82f6'
+                                    });
+                                }
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Failed to submit application. Please try again.',
+                                icon: 'error',
+                                confirmButtonColor: '#3b82f6'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Job filtering functionality
+            function filterJobs(event) {
+                if (event) event.preventDefault();
+                
+                const form = document.getElementById('filter-form');
+                const employmentType = form.querySelector('[name="employment_type"]').value;
+                const location = form.querySelector('[name="location"]').value.toLowerCase();
+                const companyName = form.querySelector('[name="company_name"]').value.toLowerCase();
+                const salaryFrom = parseInt(form.querySelector('[name="salary_from"]').value) || 0;
+                const salaryTo = parseInt(form.querySelector('[name="salary_to"]').value) || Infinity;
+
+                let visibleCount = 0;
+                
+                document.querySelectorAll('.job-item').forEach(job => {
+                    const jobEmploymentType = job.getAttribute('data-employment-type');
+                    const jobLocation = job.getAttribute('data-location').toLowerCase();
+                    const jobCompanyName = job.getAttribute('data-company-name').toLowerCase();
+                    const jobSalaryFrom = parseInt(job.getAttribute('data-salary-from'));
+                    const jobSalaryTo = parseInt(job.getAttribute('data-salary-to'));
+
+                    const matchesEmploymentType = !employmentType || jobEmploymentType === employmentType;
+                    const matchesLocation = !location || jobLocation.includes(location);
+                    const matchesCompanyName = !companyName || jobCompanyName.includes(companyName);
+                    const matchesSalary = (jobSalaryFrom >= salaryFrom || salaryFrom === 0) && 
+                                        (jobSalaryTo <= salaryTo || isNaN(salaryTo) || salaryTo === Infinity);
+
+                    if (matchesEmploymentType && matchesLocation && matchesCompanyName && matchesSalary) {
+                        job.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        job.style.display = 'none';
+                    }
                 });
                 
-                if (isConfirmed) {
-                    try {
-                        const response = await fetch(this.action, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: new URLSearchParams(new FormData(this))
-                        });
-                        
-                        if (response.redirected) {
-                            window.location.href = response.url;
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Failed to submit application. Please try again.',
-                            icon: 'error',
-                            confirmButtonColor: '#3b82f6'
-                        });
-                    }
-                }
+                // Update job count
+                document.querySelector('h1 + span').textContent = `${visibleCount} jobs found`;
+            }
+
+            // Reset filters
+            document.getElementById('reset-filters').addEventListener('click', () => {
+                document.getElementById('filter-form').reset();
+                filterJobs();
+                document.querySelector('h1 + span').textContent = `${document.querySelectorAll('.job-item').length} jobs found`;
             });
+
+            // Initialize filter form
+            document.getElementById('filter-form').addEventListener('submit', filterJobs);
         });
-
-        // Job filtering functionality
-        function filterJobs(event) {
-            event.preventDefault();
-            
-            const form = document.getElementById('filter-form');
-            const employmentType = form.querySelector('[name="employment_type"]').value;
-            const location = form.querySelector('[name="location"]').value.toLowerCase();
-            const companyName = form.querySelector('[name="company_name"]').value.toLowerCase();
-            const salaryFrom = parseInt(form.querySelector('[name="salary_from"]').value) || 0;
-            const salaryTo = parseInt(form.querySelector('[name="salary_to"]').value) || Infinity;
-
-            let visibleCount = 0;
-            
-            document.querySelectorAll('.job-item').forEach(job => {
-                const jobEmploymentType = job.getAttribute('data-employment-type');
-                const jobLocation = job.getAttribute('data-location');
-                const jobCompanyName = job.getAttribute('data-company-name');
-                const jobSalaryFrom = parseInt(job.getAttribute('data-salary-from'));
-                const jobSalaryTo = parseInt(job.getAttribute('data-salary-to'));
-
-                const matchesEmploymentType = !employmentType || jobEmploymentType === employmentType;
-                const matchesLocation = !location || jobLocation.includes(location);
-                const matchesCompanyName = !companyName || jobCompanyName.includes(companyName);
-                const matchesSalary = (jobSalaryFrom >= salaryFrom && jobSalaryTo <= salaryTo) || 
-                                    (!salaryFrom && !salaryTo);
-
-                if (matchesEmploymentType && matchesLocation && matchesCompanyName && matchesSalary) {
-                    job.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    job.style.display = 'none';
-                }
-            });
-            
-            // Update job count
-            document.querySelector('h1 + span').textContent = `${visibleCount} jobs found`;
-        }
-
-        // Reset filters
-        document.getElementById('reset-filters').addEventListener('click', () => {
-            document.getElementById('filter-form').reset();
-            document.querySelectorAll('.job-item').forEach(job => {
-                job.style.display = 'block';
-            });
-            document.querySelector('h1 + span').textContent = `${document.querySelectorAll('.job-item').length} jobs found`;
-        });
-
-        // Initialize filter form
-        document.getElementById('filter-form').addEventListener('submit', filterJobs);
     </script>
 </body>
 </html>

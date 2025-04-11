@@ -299,7 +299,7 @@
                                             </div>
                                             <input type="number" id="salary_from" name="salary_from" value="{{ job.salary_from if job else '' }}" 
                                                    class="block w-full pl-7 pr-3 py-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm border" 
-                                                   placeholder="0" min="0" step="100">
+                                                   placeholder="0" min="0">
                                         </div>
                                     </div>
                                     <div>
@@ -310,7 +310,7 @@
                                             </div>
                                             <input type="number" id="salary_to" name="salary_to" value="{{ job.salary_to if job else '' }}" 
                                                    class="block w-full pl-7 pr-3 py-2 rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm border" 
-                                                   placeholder="0" min="0" step="100">
+                                                   placeholder="0" min="0">
                                         </div>
                                     </div>
                                 </div>
@@ -368,7 +368,7 @@
                             {% if job and job.logo_filename %}
                                 <div class="mt-2 flex items-center">
                                     <p class="text-sm text-gray-600 mr-3">Current Logo:</p>
-                                    <img src="/uploads/{{ job.logo_filename }}" alt="Current Logo" class="h-12 w-auto object-contain rounded">
+                                    <img src="/static/uploads/{{ job.logo_filename }}" alt="Current Logo" class="h-12 w-auto object-contain rounded">
                                 </div>
                             {% endif %}
                             <p class="mt-1 text-xs text-gray-500">Accepted formats: JPEG, PNG, GIF. Max size: 2MB</p>

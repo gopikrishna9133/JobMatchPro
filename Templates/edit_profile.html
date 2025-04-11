@@ -154,40 +154,42 @@
                     </div>
                 </div>
 
+                
                 <!-- Resume Section -->
-                <div class="space-y-6">
-                    <h2 class="text-lg font-semibold text-gray-900 flex items-center">
-                        <i class="fas fa-file-pdf mr-2 text-indigo-600"></i> Resume
-                    </h2>
-                    <div>
-                        {% if profile.resume %}
-                            <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Current Resume</label>
-                                <div class="flex items-center">
-                                    <a href="{{ url_for('static', filename='uploads/' + profile.resume) }}" 
-                                       class="text-indigo-600 hover:text-indigo-800 flex items-center"
-                                       target="_blank">
-                                        <i class="fas fa-file-pdf mr-2"></i> {{ profile.resume }}
-                                    </a>
-                                    <span class="ml-3 text-xs text-gray-500">(Click to view)</span>
-                                </div>
-                            </div>
-                        {% else %}
-                            <p class="text-sm text-gray-500 mb-3 flex items-center">
-                                <i class="fas fa-info-circle mr-2"></i> No resume uploaded yet
-                            </p>
-                        {% endif %}
-                        <label for="resume" class="block text-sm font-medium text-gray-700 mb-1">Update Resume (PDF only, max 5MB)</label>
-                        <div class="mt-1 flex items-center">
-                            <input type="file" id="resume" name="resume" accept=".pdf"
-                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                                   onchange="validateFile(this)">
-                        </div>
-                        <div id="resume_error" class="error-message">
-                            Please upload a valid PDF file (max 5MB)
-                        </div>
-                    </div>
+    <div class="space-y-6">
+        <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+            <i class="fas fa-file-pdf mr-2 text-indigo-600"></i> Resume
+        </h2>
+        <div>
+            {% if profile.resume_path %}
+            <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Current Resume</label>
+                <div class="flex items-center">
+                    <a href="{{ url_for('view_resume', email=email) }}" 
+                    class="text-indigo-600 hover:text-indigo-800 flex items-center"
+                    target="_blank">
+                        <i class="fas fa-file-pdf mr-2"></i> 
+                        <!-- {{ profile.resume_path.split('/')[-1] if profile.resume_path else '' }} -->
+                    </a>
+                    <span class="ml-3 text-xs text-gray-500">(Click to view)</span>
                 </div>
+            </div>
+            {% else %}
+                <p class="text-sm text-gray-500 mb-3 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i> No resume uploaded yet
+                </p>
+            {% endif %}
+            <label for="resume" class="block text-sm font-medium text-gray-700 mb-1">Update Resume (PDF only, max 5MB)</label>
+            <div class="mt-1 flex items-center">
+                <input type="file" id="resume" name="resume" accept=".pdf"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                    onchange="validateFile(this)">
+            </div>
+            <div id="resume_error" class="error-message">
+                Please upload a valid PDF file (max 5MB)
+            </div>
+        </div>
+    </div>
 
                 <!-- Form Actions -->
                 <div class="flex justify-between pt-8 border-t border-gray-200">

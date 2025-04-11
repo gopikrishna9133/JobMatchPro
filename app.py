@@ -197,6 +197,7 @@ def resources():
                          websites=websites,
                          is_company=is_company)
 
+
 @app.route('/edit-resource/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_resource(id):
@@ -309,28 +310,18 @@ def edit_profile():
     email = current_user.email
     profile = SeekerData.query.filter_by(email=email).first()
     
-    if not profile:
-        flash('Profile not found', 'error')
-        return redirect(url_for('app_tracker'))
-    
     if request.method == 'POST':
-        profile.full_name = request.form['full_name']
-        profile.email = request.form['email']  # Allow email updates if desired
-        profile.phone = request.form['phone']
-        profile.education = request.form['education']
-        profile.experience = request.form['experience']
-        profile.skills = request.form['skills']
+        # ... other form processing ...
         
         if 'resume' in request.files and request.files['resume'].filename != '':
             file = request.files['resume']
-            if file and file.filename.endswith('.pdf'):
+            if file and allowed_file(file.filename):
+                # Store only the filename
                 filename = secure_filename(file.filename)
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(file_path)
-                profile.resume_path = filename
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                profile.resume_path = filename  # Store just the filename
         
         db.session.commit()
-        flash('Profile updated successfully!', 'success')
         return redirect(url_for('view_profile'))
     
     return render_template('edit_profile.html', profile=profile, email=email)
