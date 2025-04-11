@@ -10,7 +10,7 @@ pip (Python package installer)
 Setup Instructions
 1. Clone the repository:
 
-git clone [repository-url]
+git clone [https://github.com/gopikrishna9133/JobMatchPro]
 cd JobMatchPro
 
 2. Install required packages:
@@ -24,4 +24,3 @@ python app.py
 4. Open your web browser and navigate to:
 
 http://127.0.0.1:5000/
-
