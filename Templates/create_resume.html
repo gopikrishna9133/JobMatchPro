@@ -4,46 +4,214 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Resume</title>
-    <script>
-        function updatePreview() {
-            document.getElementById('previewName').innerText = document.getElementById('name').value;
-            document.getElementById('previewEmail').innerText = document.getElementById('email').value;
-            document.getElementById('previewPhone').innerText = document.getElementById('phone').value;
-            document.getElementById('previewSummary').innerText = document.getElementById('summary').value;
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --white: #fff;
         }
-    </script>
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        h2, h3 {
+            color: var(--primary-color);
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .form-section, .preview-section {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .preview-resume {
+            border: 1px solid #ddd;
+            padding: 25px;
+            min-height: 300px;
+            background-color: var(--white);
+        }
+        
+        .preview-header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .error {
+            color: var(--accent-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        input:invalid, textarea:invalid {
+            border-color: #ff9999;
+        }
+        
+        input:invalid + .error, textarea:invalid + .error {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Create Your Resume</h2>
+    <h2>Create Your Professional Resume</h2>
     
-    <form method="POST">
-        <label>Name:</label>
-        <input type="text" id="name" name="name" oninput="updatePreview()" required>
-
-        <label>Email:</label>
-        <input type="email" id="email" name="email" oninput="updatePreview()" required>
-
-        <label>Phone:</label>
-        <input type="text" id="phone" name="phone" oninput="updatePreview()" required>
-
-        <label>Summary:</label>
-        <textarea id="summary" name="summary" oninput="updatePreview()"></textarea>
-
-        <label>Select Style:</label>
-        <select name="style">
-            <option value="style1">Professional (Blue Theme)</option>
-            <option value="style2">Modern (Green Theme)</option>
-        </select>
-
-        <button type="submit">Create & Download</button>
-    </form>
-
-    <h3>Preview</h3>
-    <div style="border: 1px solid gray; padding: 10px; margin-top: 10px;">
-        <h3 id="previewName">[Your Name]</h3>
-        <p id="previewEmail">[Your Email]</p>
-        <p id="previewPhone">[Your Phone]</p>
-        <p id="previewSummary">[Your Summary]</p>
+    <div class="container">
+        <div class="form-section">
+            <form id="resumeForm" method="POST" novalidate>
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" oninput="updatePreview()" 
+                           pattern="[A-Za-z ]{3,}" 
+                           title="Please enter at least 3 alphabetical characters" required>
+                    <div class="error">Please enter a valid name (minimum 3 letters)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" oninput="updatePreview()" required>
+                    <div class="error">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="text" id="phone" name="phone" oninput="updatePreview()" 
+                           pattern="[\d\s+-]{10,}" 
+                           title="Please enter a valid phone number (minimum 10 digits)" required>
+                    <div class="error">Please enter a valid phone number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="summary">Professional Summary:</label>
+                    <textarea id="summary" name="summary" oninput="updatePreview()" 
+                              minlength="20" maxlength="500" required></textarea>
+                    <div class="error">Please enter at least 20 characters</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="style">Resume Style:</label>
+                    <select id="style" name="style">
+                        <option value="style1">Professional (Blue Theme)</option>
+                        <option value="style2">Modern (Green Theme)</option>
+                        <option value="style3">Creative (Red Theme)</option>
+                        <option value="style4">Minimalist (Black & White)</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Generate & Download Resume</button>
+            </form>
+        </div>
+        
+        <div class="preview-section">
+            <h3>Resume Preview</h3>
+            <div class="preview-resume">
+                <div class="preview-header">
+                    <h3 id="previewName">[Your Name]</h3>
+                    <p id="previewEmail">[Your Email]</p>
+                    <p id="previewPhone">[Your Phone]</p>
+                </div>
+                <div>
+                    <h4>Professional Summary</h4>
+                    <p id="previewSummary">[Your professional summary will appear here. Try to keep it concise but impactful, highlighting your key skills and experiences.]</p>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function updatePreview() {
+            document.getElementById('previewName').innerText = 
+                document.getElementById('name').value || '[Your Name]';
+            document.getElementById('previewEmail').innerText = 
+                document.getElementById('email').value || '[Your Email]';
+            document.getElementById('previewPhone').innerText = 
+                document.getElementById('phone').value || '[Your Phone]';
+            document.getElementById('previewSummary').innerText = 
+                document.getElementById('summary').value || '[Your professional summary will appear here. Try to keep it concise but impactful, highlighting your key skills and experiences.]';
+        }
+
+        // Form validation
+        document.getElementById('resumeForm').addEventListener('submit', function(event) {
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                alert('Please fill out all required fields correctly.');
+            }
+        });
+    </script>
 </body>
 </html>
