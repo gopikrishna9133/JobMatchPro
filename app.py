@@ -290,19 +290,24 @@ def create_profile():
 @app.route('/profile')
 @login_required
 def view_profile():
-    app.logger.debug(f"Current session: {session}")
-    email = current_user.email  # Fetch email from current_user
-    
-    # Query SeekerData by email instead of ID
+    email = current_user.email
     profile = SeekerData.query.filter_by(email=email).first()
-    app.logger.debug(f"Profile found: {profile.full_name if profile else 'None'}")
     
     if not profile:
-        app.logger.debug(f"No profile found for email: {email}")
         flash('Profile not found', 'error')
         return redirect(url_for('app_tracker'))
     
-    return render_template('view_profile.html', profile=profile, email=email)
+    # Generate resume URL if exists
+    resume_url = None
+    if profile.resume_path:
+        resume_path = os.path.join(app.config['UPLOAD_FOLDER'], profile.resume_path)
+        if os.path.exists(resume_path):
+            resume_url = url_for('static', filename=f'uploads/{profile.resume_path}')
+    
+    return render_template('view_profile.html', 
+                         profile=profile, 
+                         email=email,
+                         resume_url=resume_url)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -310,22 +315,30 @@ def edit_profile():
     email = current_user.email
     profile = SeekerData.query.filter_by(email=email).first()
     
-    if request.method == 'POST':
-        # ... other form processing ...
-        
-        if 'resume' in request.files and request.files['resume'].filename != '':
-            file = request.files['resume']
-            if file and allowed_file(file.filename):
-                # Store only the filename
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                profile.resume_path = filename  # Store just the filename
-        
-        db.session.commit()
-        return redirect(url_for('view_profile'))
+    if not profile:
+        flash('Profile not found', 'error')
+        return redirect(url_for('app_tracker'))
     
-    return render_template('edit_profile.html', profile=profile, email=email)
-
+    # Generate resume URL if exists
+    resume_url = None
+    if profile.resume_path:
+        resume_path = os.path.join(app.config['UPLOAD_FOLDER'], profile.resume_path)
+        if os.path.exists(resume_path):
+            resume_url = url_for('static', filename=f'uploads/{profile.resume_path}')
+    
+    if request.method == 'POST':
+        try:
+            # ... [rest of your existing POST handling code] ...
+            return redirect(url_for('view_profile'))
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Error updating profile: {str(e)}", exc_info=True)
+            flash(f'Error updating profile: {str(e)}', 'error')
+    
+    return render_template('edit_profile.html', 
+                         profile=profile, 
+                         email=email,
+                         resume_url=resume_url)  # Pass resume_url to template
 
 @app.route('/applications', methods=['GET'])
 def job_listings():
